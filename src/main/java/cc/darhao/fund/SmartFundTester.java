@@ -11,7 +11,7 @@ import okhttp3.Request;
 
 /**
  * @author DarHao
- * 智能定投回测
+ * 智能定投回测，每个ip只能测80次
  */
 public class SmartFundTester {
 	public static void main(String[] args) throws IOException {
