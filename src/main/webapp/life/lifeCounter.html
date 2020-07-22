@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>平凡的人生计算器</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<form class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="age">当前你的年龄</label>
+					<div class="controls">
+						<input id="age" type="text" value="25" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="lifeYears">你理想中的寿命</label>
+					<div class="controls">
+						<input id="lifeYears" type="text" value="85"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="retireAge">计划退休年龄</label>
+					<div class="controls">
+						<input id="retireAge" type="text" value="60"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="workcpi">工资每年平均涨幅</label>
+					<div class="controls">
+						<input id="workcpi" type="text" value="0.015"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="restYield">理财平均年化收益率（必须为正数，当你资产结余为负数时，该参数会成为负债的利率）</label>
+					<div class="controls">
+						<input id="restYield" type="text" value="0.045"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="useInYear">每年平均开销（不包括房租） + 额外消费计划（如旅行等）（请将保险费包含在此参数中，系统不考虑重大事故费用，祝你好运）</label>
+					<div class="controls">
+						<input id="useInYear" type="text" value="46000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="getInYear">每年平均收入 + 奖金或副业等收入</label>
+					<div class="controls">
+						<input id="getInYear" type="text" value="160000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="initMoney">你现有的净资产（可以为负数）</label>
+					<div class="controls">
+						<input id="initMoney" type="text" value="70000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="rent">你现在的每月房租（现没租房的输入0）</label>
+					<div class="controls">
+						<input id="rent" type="text" value="2000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="ageWhenBuyHouse">买房时你的年龄（不买房的填0）</label>
+					<div class="controls">
+						<input id="ageWhenBuyHouse" type="text" value="30"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="houseFirstPay">房子首付（不买房的填0）</label>
+					<div class="controls">
+						<input id="houseFirstPay" type="text" value="250000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="houseLoanYears">房子贷款年限（不买房的填0，全款买房的填-1）</label>
+					<div class="controls">
+						<input id="houseLoanYears" type="text" value="30"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="houseMonthlyPay">房子月供（不买房的、全款买房的请填0）</label>
+					<div class="controls">
+						<input id="houseMonthlyPay" type="text" value="1800"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="ageWhenBuyCar">买车时你的年龄（不买车的填0）</label>
+					<div class="controls">
+						<input id="ageWhenBuyCar" type="text" value="35"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="carFirstPay">车子首付（不买车的填0）</label>
+					<div class="controls">
+						<input id="carFirstPay" type="text" value="80000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="carLoanYears">车子贷款年限（不买车的填0，全款买车的填-1）</label>
+					<div class="controls">
+						<input id="carLoanYears" type="text" value="5"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="carMonthlyPay">车子月供（不买车的、全款买车的请填0）</label>
+					<div class="controls">
+						<input id="carMonthlyPay" type="text" value="3000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="children">每个孩子出生时你的年龄（要多个孩子用英文逗号分开，不要孩子填0）</label>
+					<div class="controls">
+						<input id="children" type="text" value="28,34"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="childFeeInYear">每个孩子每年的费用（从出生的奶粉钱到大学毕业前每年的学费、伙食费、礼物等）（不要孩子的请填0）</label>
+					<div class="controls">
+						<input id="childFeeInYear" type="text" value="10000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="childIndieAge">孩子能独立生活时的他们的年龄（不要孩子的请填0）</label>
+					<div class="controls">
+						<input id="childIndieAge" type="text" value="23"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="useCpi">平均每年通货膨胀率</label>
+					<div class="controls">
+						<input id="useCpi" type="text" value="0.015"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button id="sbtn" class="btn" type="button">计算</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			<p id="result">
+				©地航者 DaDa_Drool 2020
+			</p>
+		</div>
+	</div>
+</div>
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#sbtn").click(function () {
+				$.ajax({
+				    url:"count",
+				    type:'post',
+				    data: {
+				        useCpi: $('#useCpi').val(),
+				        age: $('#age').val(),
+						lifeYears: $('#lifeYears').val(),
+						retireAge: $('#retireAge').val(),
+						workcpi: $('#workcpi').val(),
+						restYield: $('#restYield').val(),
+						useInYear: $('#useInYear').val(),
+						getInYear: $('#getInYear').val(),
+						initMoney: $('#initMoney').val(),
+						rent: $('#rent').val(),
+						ageWhenBuyHouse: $('#ageWhenBuyHouse').val(),
+						houseFirstPay: $('#houseFirstPay').val(),
+						houseLoanYears: $('#houseLoanYears').val(),
+						houseMonthlyPay: $('#houseMonthlyPay').val(),
+						ageWhenBuyCar: $('#ageWhenBuyCar').val(),
+						carFirstPay: $('#carFirstPay').val(),
+						carLoanYears: $('#carLoanYears').val(),
+						carMonthlyPay: $('#carMonthlyPay').val(),
+						children: $('#children').val(),
+						childFeeInYear: $('#childFeeInYear').val(),
+						childIndieAge: $('#childIndieAge').val()
+				    },
+				    dataType: 'text',
+				    success:function (data) {
+				        $("#result").html(data);
+				    }
+				})
+			})
+		})
+	</script>
+  </body>
+</html>
