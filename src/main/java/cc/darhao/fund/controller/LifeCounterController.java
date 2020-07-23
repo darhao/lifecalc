@@ -44,6 +44,7 @@ public class LifeCounterController extends Controller{
 		int sumYield = 0;
 		int sumRest = initMoney;
 		StringBuilder sb = new StringBuilder();
+		StringBuilder sumRestString = new StringBuilder();
 		
 		//计算第一年情况
 		sb.append(age + "岁前现存初始资产：" + sumRest + "<br>");
@@ -54,6 +55,7 @@ public class LifeCounterController extends Controller{
 		sb.append("，资产结余：" + sumRest + "，理财收入：" + (int)(sumRest * restYield) 
 				+ "，理财后资产结余：" + (int)(sumRest + sumRest * restYield) + "<br>");
 		sumRest += sumRest * restYield;
+		sumRestString.append(sumRest + ",");
 		
 		//计算往后余生情况
 		for (int i = age; i <= lifeYears; i++) {
@@ -113,14 +115,15 @@ public class LifeCounterController extends Controller{
 			sb.append("，资产结余：" + sumRest + "，理财收入：" + (int)(sumRest * restYield) 
 					+ "，理财后资产结余：" + (int)(sumRest + sumRest * restYield) + "<br>");
 			sumRest += sumRest * restYield;
+			sumRestString.append(sumRest + ",");
 		}
 		
 		sb.append("人生总工资收入：" + sumGet);
 		sb.append("，理财总收入：" + sumYield);
 		sb.append("，总开销：" + sumUse);
 		sb.append("，总资产结余：" + sumRest + "<br>");
-		
-		return sb.toString();
+		sumRestString.deleteCharAt(sumRestString.length() - 1);
+		return sb.toString() + "|" + sumRestString.toString();
 	}
 
 
