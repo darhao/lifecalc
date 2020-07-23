@@ -7,9 +7,7 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		//配置web服务器	
-		UndertowServer undertowServer = UndertowServer.create(UndertowBoot.class);
-		undertowServer.setPort(8080);
-		undertowServer.start();
+		UndertowServer.create(UndertowBoot.class).start();
 	}
 
 }
