@@ -37,7 +37,7 @@ public class LifeCounterController extends Controller{
 			 int[] children,  int childFeeInYear,  int childIndieAge) {
 		
 		//临时变量
-		int moneyUseInYear = useInYear + rent;
+		int moneyUseInYear = useInYear + rent * 12;
 		int sumUse = moneyUseInYear;
 		int moneyGetInYear = getInYear;
 		int sumGet = moneyGetInYear;
@@ -46,20 +46,12 @@ public class LifeCounterController extends Controller{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sumRestString = new StringBuilder();
 		
-		//计算第一年情况
+		//初始情况
 		sb.append(age + "岁前现存初始资产：" + sumRest + "<br>");
-		sb.append(age + "岁年工资收入：" + moneyGetInYear);
-		sb.append("，年基础开销：" + moneyUseInYear);
-		sumRest += (moneyGetInYear - moneyUseInYear);
-		sumYield += sumRest * restYield;
-		sb.append("，资产结余：" + sumRest + "，理财收入：" + (int)(sumRest * restYield) 
-				+ "，理财后资产结余：" + (int)(sumRest + sumRest * restYield) + "<br>");
-		sumRest += sumRest * restYield;
-		sumRestString.append(sumRest + ",");
 		
 		//计算往后余生情况
 		for (int i = age; i <= lifeYears; i++) {
-			//计算每年工资收入
+			//计算每年基本收入
 			if(i < retireAge) {//是否已经退休
 				moneyGetInYear *= (1 + workcpi);
 				sb.append(i + "岁年工资收入：" + moneyGetInYear);
@@ -68,28 +60,28 @@ public class LifeCounterController extends Controller{
 				sb.append(i + "岁年工资收入：0");
 			}
 			
-			//计算每年平均开销
+			//计算每年支出
 			moneyUseInYear *= (1+useCpi);
 			if(i == ageWhenBuyHouse) {//是否买房年
 				sb.append("，【买房】首付：" + houseFirstPay);
 				sumUse += houseFirstPay;
 				sumRest -= houseFirstPay;
-				moneyUseInYear += houseMonthlyPay;
-				moneyUseInYear -= rent;
+				moneyUseInYear += (houseMonthlyPay * 12);
+				moneyUseInYear -= (rent * 12);
 			}
 			if(i == ageWhenBuyHouse + houseLoanYears) {//是否月供房子结束年
-				moneyUseInYear -= houseMonthlyPay;
+				moneyUseInYear -= (houseMonthlyPay * 12);
 				sb.append("，【房子】供完了");
 			}
 			if(i == ageWhenBuyCar) {//是否买车年
 				sb.append("，【买车】首付：" + carFirstPay);
 				sumUse += carFirstPay;
 				sumRest -= carFirstPay;
-				moneyUseInYear += carMonthlyPay;
+				moneyUseInYear += (carMonthlyPay * 12);
 			}
 			if(i == ageWhenBuyCar + carLoanYears) {//是否月供车子结束年
 				sb.append("，【车子】供完了");
-				moneyUseInYear -= carMonthlyPay;
+				moneyUseInYear -= (carMonthlyPay * 12);
 			}
 			for (int childBornYouAge : children) {//育儿经费
 				if(i == childBornYouAge) {
@@ -104,21 +96,26 @@ public class LifeCounterController extends Controller{
 			sb.append("，年基础开销：" + moneyUseInYear);
 			sumUse += moneyUseInYear;
 			
-			//计算每年结余
+			//计算每年基本结余
+			int moneyRestInYear = 0;
 			if(i < retireAge) {//是否已经退休
-				sumRest += (moneyGetInYear - moneyUseInYear);
+				moneyRestInYear = moneyGetInYear - moneyUseInYear;
 			}else {
-				sumRest += (0 - moneyUseInYear);
+				moneyRestInYear = 0 - moneyUseInYear;
 			}
 			
-			sumYield += sumRest * restYield;
-			sb.append("，资产结余：" + sumRest + "，理财收入：" + (int)(sumRest * restYield) 
-					+ "，理财后资产结余：" + (int)(sumRest + sumRest * restYield) + "<br>");
-			sumRest += sumRest * restYield;
+			//计算每年理财收入
+			int moneyYieldInYear = (int) (restYield * (sumRest + moneyRestInYear / 2));
+			sumYield += moneyYieldInYear;
+			sb.append("，理财收入：" + moneyYieldInYear);
+			
+			//计算每年最终结余
+			sumRest += (moneyRestInYear + moneyYieldInYear);
 			sumRestString.append(sumRest + ",");
+			sb.append("，资产结余：" + sumRest + "<br>");
 		}
 		
-		sb.append("人生总工资收入：" + sumGet);
+		sb.append("人生基本资收入：" + sumGet);
 		sb.append("，理财总收入：" + sumYield);
 		sb.append("，总开销：" + sumUse);
 		sb.append("，总资产结余：" + sumRest + "<br>");
