@@ -14,7 +14,7 @@ public class LifeCounterController extends Controller{
 	
 	
 	public void count(float useCpi,  int age,  int lifeYears,  int retireAge,  float workcpi,
-	 float restYield,  int useInYear,  int getInYear,  int initMoney,  int rent,
+	 float restYield,  int useInYear,  int getInYear,  int getInYearRetire, int initMoney,  int rent,
 	 int ageWhenBuyHouse,  int houseFirstPay,  int houseLoanYears,  int houseMonthlyPay,
 	 int ageWhenBuyCar,  int carFirstPay,  int carLoanYears,  int carMonthlyPay,
 	 String children,  int childFeeInYear,  int childIndieAge ){
@@ -24,14 +24,14 @@ public class LifeCounterController extends Controller{
 			childrenI[i] = Integer.parseInt(childrenStrings[i]);
 		}
 		 String result = realCount(useCpi, age, lifeYears, retireAge, workcpi, restYield, useInYear, 
-				 getInYear, initMoney, rent, ageWhenBuyHouse, houseFirstPay, houseLoanYears, 
+				 getInYear, getInYearRetire, initMoney, rent, ageWhenBuyHouse, houseFirstPay, houseLoanYears, 
 				 houseMonthlyPay, ageWhenBuyCar, carFirstPay, carLoanYears, carMonthlyPay, childrenI, childFeeInYear, childIndieAge);
 		 renderText(result);
 	 }
 	
 	
 	private String realCount(float useCpi,  int age,  int lifeYears,  int retireAge,  float workcpi,
-			 float restYield,  int useInYear,  int getInYear,  int initMoney,  int rent,
+			 float restYield,  int useInYear,  int getInYear,  int getInYearRetire,  int initMoney,  int rent,
 			 int ageWhenBuyHouse,  int houseFirstPay,  int houseLoanYears,  int houseMonthlyPay,
 			 int ageWhenBuyCar,  int carFirstPay,  int carLoanYears,  int carMonthlyPay,
 			 int[] children,  int childFeeInYear,  int childIndieAge) {
@@ -40,7 +40,9 @@ public class LifeCounterController extends Controller{
 		int moneyUseInYear = useInYear + rent;
 		int sumUse = moneyUseInYear;
 		int moneyGetInYear = getInYear;
+		int moneyGetInYearRetire = getInYearRetire;
 		int sumGet = moneyGetInYear;
+		int sumGetRetire = moneyGetInYearRetire;
 		int sumYield = 0;
 		int sumRest = initMoney;
 		StringBuilder sb = new StringBuilder();
@@ -65,7 +67,9 @@ public class LifeCounterController extends Controller{
 				sb.append(i + "岁年工资收入：" + moneyGetInYear);
 				sumGet += moneyGetInYear;
 			}else {
-				sb.append(i + "岁年工资收入：0");
+				moneyGetInYearRetire *= (1 + useCpi);
+				sb.append(i + "岁年退休收入：" + moneyGetInYearRetire);
+				
 			}
 			
 			//计算每年平均开销
@@ -108,7 +112,7 @@ public class LifeCounterController extends Controller{
 			if(i < retireAge) {//是否已经退休
 				sumRest += (moneyGetInYear - moneyUseInYear);
 			}else {
-				sumRest += (0 - moneyUseInYear);
+				sumRest += (moneyGetInYearRetire - moneyUseInYear);
 			}
 			
 			sumYield += sumRest * restYield;
@@ -119,7 +123,8 @@ public class LifeCounterController extends Controller{
 		}
 		
 		sb.append("人生总工资收入：" + sumGet);
-		sb.append("，理财总收入：" + sumYield);
+		sb.append("，总退休收入：" + sumGetRetire);
+		sb.append("，总理财收入：" + sumYield);
 		sb.append("，总开销：" + sumUse);
 		sb.append("，总资产结余：" + sumRest + "<br>");
 		sumRestString.deleteCharAt(sumRestString.length() - 1);
@@ -143,8 +148,10 @@ public class LifeCounterController extends Controller{
 		//【注意：请为你家人上好医疗保险和重疾险并将保险费包含在此参数中，本计算器不考虑重大意外情况，祝你和家人一生平安】
 		//每年平均开销（不包括房租） + 额外消费计划如旅行等
 		final int useInYear = 5000 * 12 + 10000;
-		//每年平均收入 + 奖金或副业等收入
+		//每年平均收入
 		final int getInYear = 12000 * 12 + 18000;
+		//退休每年平均收入
+		final int getInYearRetire = 2000 * 12;
 		//你现有的净资产（可以为负数）
 		final int initMoney = 70000;
 		//你现在的每月房租（现没租房的输入0）
@@ -172,8 +179,8 @@ public class LifeCounterController extends Controller{
 		//孩子能独立生活时的他们的年龄（不要孩子的请填0）
 		final int childIndieAge = 22;
 		
-		System.out.print(new LifeCounterController().realCount(useCpi, age, lifeYears, retireAge, workcpi, restYield, useInYear, getInYear, initMoney, rent,
-				ageWhenBuyHouse, houseFirstPay, houseLoanYears, houseMonthlyPay, ageWhenBuyCar, carFirstPay,
+		System.out.print(new LifeCounterController().realCount(useCpi, age, lifeYears, retireAge, workcpi, restYield, useInYear, getInYear, 
+				getInYearRetire, initMoney, rent, ageWhenBuyHouse, houseFirstPay, houseLoanYears, houseMonthlyPay, ageWhenBuyCar, carFirstPay,
 				carLoanYears, carMonthlyPay, children, childFeeInYear, childIndieAge));
 	}
 	

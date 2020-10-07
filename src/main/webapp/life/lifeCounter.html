@@ -59,9 +59,15 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="getInYear">每年平均收入 + 奖金或副业等收入</label>
+					<label class="control-label" for="getInYear">工作时每年平均收入</label>
 					<div class="controls">
 						<input id="getInYear" type="text" value="160000"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="getInYearRetire">退休后每年平均收入</label>
+					<div class="controls">
+						<input id="getInYearRetire" type="text" value="24000"/>
 					</div>
 				</div>
 				<div class="control-group">
@@ -191,6 +197,7 @@
 						restYield: $('#restYield').val(),
 						useInYear: $('#useInYear').val(),
 						getInYear: $('#getInYear').val(),
+						getInYearRetire: $('#getInYearRetire').val(),
 						initMoney: $('#initMoney').val(),
 						rent: $('#rent').val(),
 						ageWhenBuyHouse: $('#ageWhenBuyHouse').val(),
