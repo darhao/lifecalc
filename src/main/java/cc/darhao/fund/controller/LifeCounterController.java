@@ -1,6 +1,11 @@
 package cc.darhao.fund.controller;
 
+import java.io.IOException;
+
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
+
+import cc.darhao.dautils.api.TextFileUtil;
 
 /**
  * @author DarHao
@@ -10,6 +15,61 @@ public class LifeCounterController extends Controller{
 
 	public void index() {
 		render("lifeCounter.html");
+	}
+	
+	
+	public void save(String name,float useCpi,  int age,  int lifeYears,  int retireAge,  float workcpi,
+			 float restYield,  int useInYear,  int getInYear,  int getInYearRetire, int initMoney,  int rent,
+			 int ageWhenBuyHouse,  int houseFirstPay,  int houseLoanYears,  int houseMonthlyPay,
+			 int ageWhenBuyCar,  int carFirstPay,  int carLoanYears,  int carMonthlyPay,
+			 String children,  int childFeeInYear,  int childIndieAge ) {
+		if(name == null || name.isEmpty()) {
+			renderText("fail");
+			return;
+		}
+		JSONObject object = new JSONObject();
+		object.put("useCpi", useCpi);
+		object.put("age", age);
+		object.put("lifeYears", lifeYears);
+		object.put("retireAge", retireAge);
+		object.put("workcpi", workcpi);
+		object.put("restYield", restYield);
+		object.put("useInYear", useInYear);
+		object.put("getInYear", getInYear);
+		object.put("getInYearRetire", getInYearRetire);
+		object.put("initMoney", initMoney);
+		object.put("rent", rent);
+		object.put("ageWhenBuyHouse", ageWhenBuyHouse);
+		object.put("houseFirstPay", houseFirstPay);
+		object.put("houseLoanYears", houseLoanYears);
+		object.put("houseMonthlyPay", houseMonthlyPay);
+		object.put("ageWhenBuyCar", ageWhenBuyCar);
+		object.put("carFirstPay", carFirstPay);
+		object.put("carLoanYears", carLoanYears);
+		object.put("carMonthlyPay", carMonthlyPay);
+		object.put("children", children);
+		object.put("childFeeInYear", childFeeInYear);
+		object.put("childIndieAge", childIndieAge);
+		try {
+			TextFileUtil.writeToFile(name + ".sav", object.toJSONString());
+			renderText("succ");
+		} catch (IOException e) {
+			renderText(e.getMessage());
+		}
+	}
+	
+	
+	public void load(String name) {
+		if(name == null || name.isEmpty()) {
+			renderText("fail");
+			return;
+		}
+		try {
+			String json = TextFileUtil.readFromFile(name + ".sav");
+			renderText(json);
+		} catch (IOException e) {
+			renderText(e.getMessage());
+		}
 	}
 	
 	
@@ -53,14 +113,19 @@ public class LifeCounterController extends Controller{
 		
 		//计算往后余生情况
 		for (int i = age; i <= lifeYears; i++) {
+			//计算每年理财收入
+			int moneyYieldInYear = (int) (restYield * sumRest);
+			sumYield += moneyYieldInYear;
+			sb.append(i + "岁那一年的理财收入：" + moneyYieldInYear);
+			
 			//计算每年基本收入
 			if(i < retireAge) {//是否已经退休
 				moneyGetInYear *= (1 + workcpi);
-				sb.append(i + "岁年工资收入：" + moneyGetInYear);
+				sb.append("，年工资收入：" + moneyGetInYear);
 				sumGet += moneyGetInYear;
 			}else {
 				moneyGetInYearRetire *= (1 + useCpi);
-				sb.append(i + "岁年退休收入：" + moneyGetInYearRetire);
+				sb.append("，年退休收入：" + moneyGetInYearRetire);
 				
 			}
 			
@@ -107,11 +172,6 @@ public class LifeCounterController extends Controller{
 			}else {
 				sumRest += (moneyGetInYearRetire - moneyUseInYear);
 			}
-			
-			//计算每年理财收入
-			int moneyYieldInYear = (int) (restYield * (sumRest + moneyRestInYear / 2));
-			sumYield += moneyYieldInYear;
-			sb.append("，理财收入：" + moneyYieldInYear);
 			
 			//计算每年最终结余
 			sumRest += (moneyRestInYear + moneyYieldInYear);
